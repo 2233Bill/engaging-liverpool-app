@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engaging Liverpool - Arts & Culture App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        .app-container {
+            max-width: 375px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Status Bar */
+        .status-bar {
+            height: 44px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            font-size: 14px;
+            font-weight: 600;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .status-left {
+            color: #000;
+        }
+        
+        .status-right {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+        
+        .signal-icon {
+            width: 18px;
+            height: 12px;
+            background: #000;
+            border-radius: 2px;
+            position: relative;
+        }
+        
+        .wifi-icon {
+            width: 15px;
+            height: 12px;
+            border: 2px solid #000;
+            border-bottom: none;
+            border-radius: 15px 15px 0 0;
+        }
+        
+        .battery-icon {
+            width: 24px;
+            height: 12px;
+            border: 1px solid #000;
+            border-radius: 2px;
+            position: relative;
+        }
+        
+        .battery-icon::after {
+            content: '';
+            position: absolute;
+            right: -3px;
+            top: 3px;
+            width: 2px;
+            height: 6px;
+            background: #000;
+            border-radius: 0 1px 1px 0;
+        }
+        
+        /* Location Header */
+        .location-header {
+            padding: 15px 20px 10px;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .location-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        
+        .app-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1E88E5;
+            margin-bottom: 2px;
+        }
+        
+        .location-details {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .location-icon {
+            color: #1E88E5;
+            font-size: 16px;
+        }
+        
+        .location-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: #666;
+        }
+        
+        .dropdown-arrow {
+            color: #666;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        
+        .notification-icon {
+            color: #666;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        /* Hero Banner */
+        .hero-banner {
+            height: 200px;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200"><defs><linearGradient id="cultural" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%231E88E5;stop-opacity:1" /><stop offset="50%" style="stop-color:%2326c6da;stop-opacity:1" /><stop offset="100%" style="stop-color:%234caf50;stop-opacity:1" /></linearGradient></defs><rect width="400" height="200" fill="url(%23cultural)"/><rect x="50" y="120" width="80" height="60" fill="%23795548" opacity="0.8"/><rect x="55" y="115" width="70" height="15" fill="%23ff9800" opacity="0.9"/><circle cx="300" cy="60" r="25" fill="%23ffeb3b" opacity="0.7"/><rect x="250" y="140" width="100" height="40" fill="%23e91e63" opacity="0.6"/><polygon points="200,80 220,60 240,80 220,100" fill="%239c27b0" opacity="0.7"/></svg>');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            margin: 0 20px;
+            border-radius: 12px;
+            margin-top: 10px;
+        }
+        
+        .hero-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .search-container {
+            width: 90%;
+            position: relative;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 12px 45px 12px 15px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255,255,255,0.9);
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .search-box::placeholder {
+            color: #999;
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 18px;
+        }
+        
+        /* Service Categories */
+        .services-section {
+            padding: 25px 20px;
+            background: white;
+        }
+        
+        .services-grid {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        
+        .service-item {
+            flex: 1;
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .service-icon {
+            width: 50px;
+            height: 50px;
+            background: #1E88E5;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            color: white;
+            font-size: 20px;
+            transition: transform 0.2s;
+        }
+        
+        .service-item:hover .service-icon {
+            transform: scale(1.1);
+        }
+        
+        .service-name {
+            font-size: 11px;
+            color: #666;
+            font-weight: 500;
+            line-height: 1.2;
+        }
+        
+        /* Popular Destinations */
+        .destinations-section {
+            padding: 0 20px 25px;
+            background: white;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .destinations-scroll {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .destinations-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .destination-card {
+            min-width: 140px;
+            height: 160px;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .destination-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .destination-image {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.6));
+        }
+        
+        .powerhouse-bg {
+            background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.6)), 
+                            url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 160"><defs><linearGradient id="powerhouse" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23ff9800;stop-opacity:1" /><stop offset="100%" style="stop-color:%23f57c00;stop-opacity:1" /></linearGradient></defs><rect width="140" height="160" fill="%234caf50"/><rect x="20" y="80" width="100" height="60" fill="url(%23powerhouse)"/><rect x="25" y="70" width="90" height="15" fill="%23795548"/><rect x="30" y="60" width="80" height="15" fill="%23795548"/><rect x="60" y="40" width="20" height="25" fill="%23ffeb3b"/><circle cx="70" cy="30" r="8" fill="%23e91e63"/></svg>');
+        }
+        
+        .streetart-bg {
+            background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.6)), 
+                            url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 160"><defs><linearGradient id="street" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23e91e63;stop-opacity:1" /><stop offset="100%" style="stop-color:%239c27b0;stop-opacity:1" /></linearGradient></defs><rect width="140" height="160" fill="%23607d8b"/><rect x="0" y="120" width="140" height="40" fill="%23424242"/><rect x="20" y="60" width="30" height="80" fill="%23795548"/><rect x="90" y="40" width="30" height="100" fill="%23795548"/><circle cx="70" cy="80" r="20" fill="url(%23street)"/><polygon points="50,100 70,80 90,100" fill="%23ffeb3b"/></svg>');
+        }
+        
+        .festival-bg {
+            background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.6)), 
+                            url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 160"><defs><linearGradient id="festival" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23ff5722;stop-opacity:1" /><stop offset="100%" style="stop-color:%23ff9800;stop-opacity:1" /></linearGradient></defs><rect width="140" height="160" fill="%234caf50"/><circle cx="40" cy="60" r="15" fill="url(%23festival)"/><circle cx="100" cy="80" r="18" fill="%23e91e63"/><circle cx="70" cy="100" r="12" fill="%239c27b0"/><polygon points="70,40 80,20 90,40" fill="%23ffeb3b"/><rect x="0" y="140" width="140" height="20" fill="%23795548"/></svg>');
+        }
+        
+        .destination-content {
+            padding: 12px;
+            color: white;
+        }
+        
+        .destination-name {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 2px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+        }
+        
+        .destination-subtitle {
+            font-size: 11px;
+            color: rgba(255,255,255,0.9);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        /* Explore Section */
+        .explore-section {
+            padding: 0 20px 100px;
+            background: white;
+        }
+        
+        .explore-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            padding-bottom: 10px;
+        }
+        
+        .explore-card {
+            height: 80px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+            padding: 10px;
+        }
+        
+        .explore-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .explore-card:nth-child(1) {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .explore-card:nth-child(2) {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .explore-card:nth-child(3) {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .explore-card:nth-child(4) {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 375px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            padding: 8px 0 20px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 8px 0;
+            color: #999;
+            font-size: 12px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .nav-item.active {
+            color: #1E88E5;
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+            display: block;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 375px) {
+            .app-container {
+                max-width: 100%;
+            }
+            .bottom-nav {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <div class="status-left">07:00</div>
+            <div class="status-right">
+                <div class="wifi-icon"></div>
+                <div class="signal-icon"></div>
+                <div class="battery-icon"></div>
+            </div>
+        </div>
+        
+        <!-- Location Header -->
+        <div class="location-header">
+            <div class="location-info">
+                <div class="app-title">Engaging Liverpool</div>
+                <div class="location-details">
+                    <span class="location-icon">📍</span>
+                    <span class="location-text">Liverpool, NSW</span>
+                    <span class="dropdown-arrow">▼</span>
+                </div>
+            </div>
+            <div class="notification-icon">🔔</div>
+        </div>
+        
+        <!-- Hero Banner -->
+        <div class="hero-banner">
+            <h1 class="hero-title">Discover Arts & Culture</h1>
+            <div class="search-container">
+                <input type="text" class="search-box" placeholder="Search events, artists & venues">
+                <span class="search-icon">🔍</span>
+            </div>
+        </div>
+        
+        <!-- Service Categories -->
+        <div class="services-section">
+            <div class="services-grid">
+                <div class="service-item">
+                    <div class="service-icon">📅</div>
+                    <div class="service-name">Events</div>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">🏛️</div>
+                    <div class="service-name">Venues</div>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">☕️</div>
+                    <div class="service-name">Eat & Drink</div>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">🎨</div>
+                    <div class="service-name">Local Art</div>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">💡</div>
+                    <div class="service-name">Safety Info</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Featured This Week -->
+        <div class="destinations-section">
+            <h2 class="section-title">Featured This Week</h2>
+            <div class="destinations-scroll">
+                <div class="destination-card">
+                    <div class="destination-image powerhouse-bg">
+                        <div class="destination-content">
+                            <div class="destination-name">Casula Powerhouse</div>
+                            <div class="destination-subtitle">Exhibitions & Workshops</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="destination-card">
+                    <div class="destination-image streetart-bg">
+                        <div class="destination-content">
+                            <div class="destination-name">Liverpool Street Art</div>
+                            <div class="destination-subtitle">Discover Public Murals</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="destination-card">
+                    <div class="destination-image festival-bg">
+                        <div class="destination-content">
+                            <div class="destination-name">Liverpool Luminate</div>
+                            <div class="destination-subtitle">Community Festival</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Discover By Category -->
+        <div class="explore-section">
+            <h2 class="section-title">Discover By Category</h2>
+            <div class="explore-grid">
+                <div class="explore-card">Free Events</div>
+                <div class="explore-card">Family Friendly</div>
+                <div class="explore-card">Music & Nightlife</div>
+                <div class="explore-card">Workshops</div>
+            </div>
+        </div>
+        
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-item active">
+                <span class="nav-icon">🏠</span>
+                <div>Home</div>
+            </div>
+            <div class="nav-item">
+                <span class="nav-icon">🔍</span>
+                <div>Discover</div>
+            </div>
+            <div class="nav-item">
+                <span class="nav-icon">🔎</span>
+                <div>Search</div>
+            </div>
+            <div class="nav-item">
+                <span class="nav-icon">👤</span>
+                <div>Profile</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
